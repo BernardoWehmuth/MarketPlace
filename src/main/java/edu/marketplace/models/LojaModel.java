@@ -17,6 +17,7 @@ public class LojaModel {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonBackReference
     private UsuarioModel proprietario;
 
     @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)

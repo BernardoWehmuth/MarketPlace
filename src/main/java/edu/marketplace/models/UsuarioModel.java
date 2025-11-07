@@ -25,6 +25,7 @@ public class UsuarioModel {
     private String email;
 
     @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
+    @com.fasterxml.jackson.annotation.JsonBackReference
     private List<LojaModel> lojas;
 
     @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL)
