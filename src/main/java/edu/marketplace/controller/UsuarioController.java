@@ -16,6 +16,7 @@ public class UsuarioController {
 	@GetMapping("/listarUsuarios")
 	public ResponseEntity<?> listarUsuarios(){
 		return ResponseEntity.ok(usuarioService.listarUsuarios());
+
 	}
 	
 	@PostMapping("/criarUsuario")
