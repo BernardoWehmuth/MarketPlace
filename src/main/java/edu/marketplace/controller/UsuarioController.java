@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import edu.marketplace.models.UsuarioModel;
-import edu.marketplace.repositorys.UsuarioRepository;
 import edu.marketplace.service.UsuarioService;
 
 @RestController
@@ -14,12 +13,9 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
 	@GetMapping("/listarUsuarios")
 	public ResponseEntity<?> listarUsuarios(){
-		return ResponseEntity.ok(usuarioRepository.findAll());
+		return ResponseEntity.ok(usuarioService.listarUsuarios());
 	}
 	
 	@PostMapping("/criarUsuario")
