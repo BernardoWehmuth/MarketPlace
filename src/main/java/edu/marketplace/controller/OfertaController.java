@@ -16,10 +16,10 @@ public class OfertaController {
     @Autowired
     private OfertaService ofertaService;
 
-    @PostMapping("/criar")
+    @PostMapping("/criarOferta/loja/{lojaId}/item/{itemId}")
     public ResponseEntity<?> criarOferta(
-            @RequestParam int lojaId,
-            @RequestParam int itemId,
+            @PathVariable int lojaId,
+            @PathVariable int itemId,
             @RequestParam double preco,
             @RequestParam int quantidade) {
 
@@ -31,21 +31,12 @@ public class OfertaController {
         }
     }
 
-    @GetMapping("/todas")
+    @GetMapping("/listarOfertas")
     public ResponseEntity<List<OfertaModel>> listarTodas() {
         return ResponseEntity.ok(ofertaService.listarTodasOfertas());
     }
-
-    @GetMapping("/loja/{lojaId}")
-    public ResponseEntity<?> listarPorLoja(@PathVariable int lojaId) {
-        try {
-            return ResponseEntity.ok(ofertaService.listarOfertasDaLoja(lojaId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
     
-    @PutMapping("/atualizar/{id}")
+    @PutMapping("/atualizarOferta/{id}")
     public ResponseEntity<?> atualizarOferta(
             @PathVariable int id,
             @RequestParam double preco,
