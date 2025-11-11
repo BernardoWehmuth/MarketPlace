@@ -1,6 +1,5 @@
 package edu.marketplace.models;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 

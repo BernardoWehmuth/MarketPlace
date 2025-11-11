@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import edu.marketplace.models.LojaModel;
 import edu.marketplace.service.LojaService;
-import edu.marketplace.service.OfertaService;
 
 
 @RestController
@@ -17,9 +16,6 @@ import edu.marketplace.service.OfertaService;
 public class LojaController {
 	@Autowired
 	private LojaService lojaService;
-	
-	@Autowired
-	private OfertaService ofertaService;
 	
 	@GetMapping("/listarLojas")
 	public ResponseEntity<List<LojaModel>> listarLojas(){
@@ -37,19 +33,4 @@ public class LojaController {
 	        return ResponseEntity.badRequest().body(e.getMessage());
 	    }
 	}
-	
-	@PutMapping("/anexarProduto/{lojaId}/{itemId}")
-	public ResponseEntity<?> anexarProduto(@PathVariable int lojaId, @PathVariable int itemId){
-		
-		return ResponseEntity.ok(anexarProduto(itemId, lojaId));
-	}
-	
-	@GetMapping("/loja/{lojaId}")
-    public ResponseEntity<?> listarPorLoja(@PathVariable int lojaId) {
-        try {
-            return ResponseEntity.ok(ofertaService.listarOfertasDaLoja(lojaId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }
