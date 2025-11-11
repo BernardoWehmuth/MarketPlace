@@ -2,23 +2,19 @@ package edu.marketplace.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
 
 @Entity
 @Data
-@Table(name = "item")
+@Table(name = "itens")
 public class ItemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String nome;
+    
+    @Column(nullable = false)
     private String descricao;
-    private double preco;
 
-    @ManyToMany(mappedBy = "itens")
-    private List<PedidoModel> pedidos;
-
-    @ManyToMany(mappedBy = "itens")
-    private List<LojaModel> lojas;
 }

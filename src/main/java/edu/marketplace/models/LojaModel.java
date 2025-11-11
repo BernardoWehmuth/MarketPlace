@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "loja")
+@Table(name = "lojas")
 public class LojaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,19 +15,17 @@ public class LojaModel {
     @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
+    private String cnpj;
+    
+    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
+    private List<OfertaModel> ofertas;
+    
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "proprietario_id", nullable = false)
     @com.fasterxml.jackson.annotation.JsonBackReference
     private UsuarioModel proprietario;
 
     @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
     private List<PedidoModel> pedidos;
-
-    @ManyToMany
-    @JoinTable(
-        name = "loja_itens",
-        joinColumns = @JoinColumn(name = "loja_id"),
-        inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private List<ItemModel> itens;
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "pedido")
+@Table(name = "pedidos")
 public class PedidoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +28,9 @@ public class PedidoModel {
 
     @ManyToMany
     @JoinTable(
-        name = "pedido_itens",
+        name = "pedidos_ofertas",
         joinColumns = @JoinColumn(name = "pedido_id"),
-        inverseJoinColumns = @JoinColumn(name = "item_id")
+        inverseJoinColumns = @JoinColumn(name = "oferta_id")
     )
-    private List<ItemModel> itens;
+    private List<OfertaModel> ofertas;
 }
