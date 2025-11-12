@@ -16,7 +16,7 @@ public class OfertaController {
     @Autowired
     private OfertaService ofertaService;
 
-    @PostMapping("/criarOferta/loja/{lojaId}/item/{itemId}")
+    @PostMapping("/criar/loja/{lojaId}/item/{itemId}")
     public ResponseEntity<?> criarOferta(
             @PathVariable int lojaId,
             @PathVariable int itemId,
@@ -31,7 +31,7 @@ public class OfertaController {
         }
     }
 
-    @GetMapping("/listarOfertas")
+    @GetMapping("/listar")
     public ResponseEntity<List<OfertaModel>> listarTodas() {
         return ResponseEntity.ok(ofertaService.listarTodasOfertas());
     }
@@ -58,7 +58,7 @@ public class OfertaController {
         }
     }
     
-    @GetMapping("/loja/{lojaId}")
+    @GetMapping("/buscarPorLoja/{lojaId}")
     public ResponseEntity<?> listarOfertasPorLoja(@PathVariable int lojaId) {
         try {
             return ResponseEntity.ok(ofertaService.listarOfertasDaLoja(lojaId));

@@ -17,12 +17,12 @@ public class LojaController {
 	@Autowired
 	private LojaService lojaService;
 	
-	@GetMapping("/listarLojas")
+	@GetMapping("/listar")
 	public ResponseEntity<List<LojaModel>> listarLojas(){
 		return ResponseEntity.ok(lojaService.listarLojas());
 	}
 	
-	@PostMapping("/criarLoja/{usuarioId}")
+	@PostMapping("/criar/{usuarioId}")
 	public ResponseEntity<?> criarLoja(@PathVariable int usuarioId, @RequestBody LojaModel novaLoja) {
 	    try {
 	        LojaModel loja = lojaService.criarLoja(usuarioId, novaLoja);

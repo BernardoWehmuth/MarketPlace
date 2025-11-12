@@ -1,5 +1,7 @@
 package edu.marketplace.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,8 +19,9 @@ public class OfertaModel {
     @Column(nullable = false)
     private int quantidade;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loja_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "ofertas"})
     private LojaModel loja;
 
     @ManyToOne

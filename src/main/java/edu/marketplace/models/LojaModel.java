@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Data
 @Table(name = "lojas")
@@ -18,7 +20,8 @@ public class LojaModel {
     @Column(nullable = false)
     private String cnpj;
     
-    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("loja")
     private List<OfertaModel> ofertas;
     
     @ManyToOne

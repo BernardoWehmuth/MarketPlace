@@ -13,13 +13,13 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@GetMapping("/listarUsuarios")
+	@GetMapping("/listar")
 	public ResponseEntity<?> listarUsuarios(){
 		return ResponseEntity.ok(usuarioService.listarUsuarios());
 
 	}
 	
-	@PostMapping("/criarUsuario")
+	@PostMapping("/criar")
 	public ResponseEntity<?> criarUsuario(@RequestBody UsuarioModel novoUsuario) {
 		try {
 			UsuarioModel usuario = usuarioService.criarUsuario(novoUsuario);
