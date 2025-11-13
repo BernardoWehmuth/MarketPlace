@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Data
 @Table(name = "usuarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +28,10 @@ public class UsuarioModel {
     private String email;
 
     @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
-    @com.fasterxml.jackson.annotation.JsonBackReference
+    @JsonIgnoreProperties({"proprietario", "pedidos", "ofertas"})
     private List<LojaModel> lojas;
 
     @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"comprador", "loja", "ofertas"})
     private List<PedidoModel> pedidos;
 }

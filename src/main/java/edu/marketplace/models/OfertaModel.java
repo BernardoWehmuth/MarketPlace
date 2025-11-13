@@ -8,6 +8,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "ofertas")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OfertaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class OfertaModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loja_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "ofertas"})
+    @JsonIgnoreProperties({"ofertas", "pedidos", "proprietario"})
     private LojaModel loja;
 
     @ManyToOne

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Data
 @Table(name = "lojas")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LojaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +22,15 @@ public class LojaModel {
     private String cnpj;
     
     @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("loja")
+    @JsonIgnoreProperties({"loja", "item"})
     private List<OfertaModel> ofertas;
     
     @ManyToOne
     @JoinColumn(name = "proprietario_id", nullable = false)
-    @com.fasterxml.jackson.annotation.JsonBackReference
+    @JsonIgnoreProperties({"lojas", "pedidos"})
     private UsuarioModel proprietario;
 
     @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"loja", "comprador", "ofertas"})
     private List<PedidoModel> pedidos;
 }

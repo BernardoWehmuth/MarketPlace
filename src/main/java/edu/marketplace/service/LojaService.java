@@ -5,14 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.marketplace.models.ItemModel;
-import edu.marketplace.models.LojaModel;
-import edu.marketplace.models.OfertaModel;
-import edu.marketplace.models.UsuarioModel;
-import edu.marketplace.repositorys.ItemRepository;
-import edu.marketplace.repositorys.LojaRepository;
-import edu.marketplace.repositorys.OfertaRepository;
-import edu.marketplace.repositorys.UsuarioRepository;
+import edu.marketplace.models.*;
+import edu.marketplace.repositorys.*;
 
 @Service
 public class LojaService {
