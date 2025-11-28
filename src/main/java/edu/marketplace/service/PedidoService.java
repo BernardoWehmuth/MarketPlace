@@ -1,12 +1,16 @@
 package edu.marketplace.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import edu.marketplace.repositorys.*;
+import jakarta.transaction.Transactional;
+import edu.marketplace.dto.PedidoOfertaDto;
 import edu.marketplace.models.*;
 
 @Service
@@ -21,20 +25,48 @@ public class PedidoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public PedidoModel realizarPedido(Iterable<Integer> ofertaIds, int compradorId) {
-        List<OfertaModel> ofertas = ofertaRepository.findAllById(ofertaIds);
-        if (ofertas.isEmpty()) {
-            throw new IllegalArgumentException("Nenhuma oferta encontrada para os IDs informados");
-        }
-
-        UsuarioModel comprador = usuarioRepository.findById(compradorId)
+    public ResponseEntity<?> listarPedidos(){
+    	return ResponseEntity.ok(pedidoRepository.findAll());
+    }
+    
+    @Transactional
+    public PedidoModel realizarPedido(List<PedidoOfertaDto> ofertasPedido, int compradorId) {
+    	UsuarioModel comprador = usuarioRepository.findById(compradorId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+    	
+    	PedidoModel pedido = new PedidoModel();
+    	pedido.setComprador(comprador);
+    	pedido.setDataPedido(LocalDateTime.now());
+        
+    	List<OfertaModel> ofertasUsadas = new ArrayList<>();
+    	double valorTotal = 0;
+    	LojaModel loja = null;
+       
+    	for (PedidoOfertaDto item : ofertasPedido) {
 
-        PedidoModel pedido = new PedidoModel();
-        pedido.setComprador(comprador);
-        pedido.setDataPedido(LocalDateTime.now());
-        pedido.setLoja(ofertas.get(0).getLoja());
-        pedido.setOfertas(ofertas);
+            OfertaModel oferta = ofertaRepository.findById(item.getOfertaId())
+                    .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada"));
+
+            if (loja == null)
+                loja = oferta.getLoja();
+
+            if (oferta.getLoja().getId() != loja.getId())
+                throw new IllegalArgumentException("Todas as ofertas devem ser da mesma loja");
+
+            if (oferta.getQuantidade() < item.getQuantidade())
+                throw new IllegalArgumentException("Estoque insuficiente da oferta " + oferta.getId());
+
+            oferta.setQuantidade(oferta.getQuantidade() - item.getQuantidade());
+            ofertaRepository.save(oferta);
+
+            ofertasUsadas.add(oferta);
+
+            valorTotal += oferta.getPreco() * item.getQuantidade();
+        }
+        
+    	pedido.setOfertas(ofertasUsadas);
+        pedido.setLoja(loja);
+        pedido.setValorPedido(valorTotal);
 
         return pedidoRepository.save(pedido);
     }

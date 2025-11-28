@@ -22,8 +22,7 @@ public class ItemModel {
     @Column(nullable = false)
     private String descricao;
 
-    @OneToMany
-    @JoinColumn(name = "ofertas_id")
+    @OneToMany(mappedBy = "item")
+    @JsonIgnoreProperties({"item", "loja"})
     private List<OfertaModel> ofertas;
-    
 }

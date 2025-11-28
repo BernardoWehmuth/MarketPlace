@@ -27,5 +27,6 @@ public class OfertaModel {
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonIgnoreProperties({"ofertas"})
     private ItemModel item;
 }
