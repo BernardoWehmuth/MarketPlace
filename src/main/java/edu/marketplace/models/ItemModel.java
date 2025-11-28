@@ -1,5 +1,7 @@
 package edu.marketplace.models;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -20,4 +22,8 @@ public class ItemModel {
     @Column(nullable = false)
     private String descricao;
 
+    @OneToMany
+    @JoinColumn(name = "ofertas_id")
+    private List<OfertaModel> ofertas;
+    
 }
