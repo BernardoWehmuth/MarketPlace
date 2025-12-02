@@ -59,10 +59,13 @@ public class OfertaService {
         return ofertaRepository.save(oferta);
     }
 
-    public void excluirOferta(int ofertaId) {
-        if (!ofertaRepository.existsById(ofertaId)) {
-            throw new IllegalArgumentException("Oferta não encontrada");
-        }
-        ofertaRepository.deleteById(ofertaId);
+    public OfertaModel adicionarQuantidade(int ofertaId, int quantidadeAdicionada) {
+        OfertaModel oferta = ofertaRepository.findById(ofertaId)
+                .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada"));
+
+        int novaQuantidade = oferta.getQuantidade() + quantidadeAdicionada;
+        oferta.setQuantidade(novaQuantidade);
+
+        return ofertaRepository.save(oferta);
     }
 }
