@@ -17,12 +17,6 @@ public class LojaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private ItemRepository itemRepository;
-
-    @Autowired
-    private OfertaRepository ofertaRepository;
-
     public List<LojaModel> listarLojas() {
         return lojaRepository.findAll();
     }
@@ -33,22 +27,6 @@ public class LojaService {
 
         novaLoja.setProprietario(proprietario);
         return lojaRepository.save(novaLoja);
-    }
-
-    public OfertaModel anexarProduto(int itemId, int lojaId, double preco, int quantidade) {
-        LojaModel loja = lojaRepository.findById(lojaId)
-                .orElseThrow(() -> new IllegalArgumentException("Essa loja não existe"));
-
-        ItemModel item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new IllegalArgumentException("Esse item não existe"));
-
-        OfertaModel oferta = new OfertaModel();
-        oferta.setItem(item);
-        oferta.setLoja(loja);
-        oferta.setPreco(preco);
-        oferta.setQuantidade(quantidade);
-
-        return ofertaRepository.save(oferta);
     }
 
     public List<OfertaModel> listarProdutos(int lojaId) {

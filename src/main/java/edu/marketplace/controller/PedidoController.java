@@ -15,7 +15,7 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<PedidoModel> realizarPedido(@RequestBody PedidoRequestDto request) {
         PedidoModel pedido = pedidoService.realizarPedido(request.getOfertas(), request.getCompradorId());
         return ResponseEntity.ok(pedido);

@@ -16,10 +16,10 @@ public class OfertaController {
     @Autowired
     private OfertaService ofertaService;
 
-    @PostMapping("/criar/loja/{lojaId}/item/{itemId}")
+    @PostMapping("/criar")
     public ResponseEntity<?> criarOferta(
-            @PathVariable int lojaId,
-            @PathVariable int itemId,
+            @RequestParam int lojaId,
+            @RequestParam int itemId,
             @RequestParam double preco,
             @RequestParam int quantidade) {
 
@@ -43,16 +43,6 @@ public class OfertaController {
             @RequestParam int quantidade) {
         try {
             return ResponseEntity.ok(ofertaService.atualizarOferta(id, preco, quantidade));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<?> excluirOferta(@PathVariable int id) {
-        try {
-            ofertaService.excluirOferta(id);
-            return ResponseEntity.ok("Oferta removida com sucesso");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
