@@ -70,4 +70,15 @@ public class PedidoService {
 
         return pedidoRepository.save(pedido);
     }
+    
+    @Transactional
+    public void excluirPedido(int pedidoId) {
+        PedidoModel pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        pedido.getOfertas().clear();
+
+        pedidoRepository.delete(pedido);
+    }
+
 }

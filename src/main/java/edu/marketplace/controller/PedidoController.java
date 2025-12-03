@@ -25,5 +25,13 @@ public class PedidoController {
     public ResponseEntity<?> listarPedidos() {
         return ResponseEntity.ok(pedidoService.listarPedidos());
     }
-    
+    @DeleteMapping("/excluir/{pedidoId}")
+    public ResponseEntity<?> excluirPedido(@PathVariable int pedidoId){
+    	try {
+    		pedidoService.excluirPedido(pedidoId);
+    		return ResponseEntity.ok().body("O pedido de id " + pedidoId + " foi excluido com sucesso");
+    	}catch(Exception e) {
+    		return ResponseEntity.badRequest().body(e.getMessage());
+    	}
+    }
 }

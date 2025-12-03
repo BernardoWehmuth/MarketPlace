@@ -27,7 +27,5 @@ public class UsuarioController {
 		} catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-		
 	}
-	
 }
