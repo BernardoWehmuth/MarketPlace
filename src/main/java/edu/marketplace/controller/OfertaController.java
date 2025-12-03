@@ -48,14 +48,6 @@ public class OfertaController {
         }
     }
     
-    @GetMapping("/buscarPorLoja/{lojaId}")
-    public ResponseEntity<?> listarOfertasPorLoja(@PathVariable int lojaId) {
-        try {
-            return ResponseEntity.ok(ofertaService.listarOfertasDaLoja(lojaId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
     @PutMapping("/atualizarQuantidade/{ofertaId}")
     public ResponseEntity<?> adicionarQuantidade(@PathVariable int ofertaId, @RequestParam int quantidadeAdicionada) {
     	return ResponseEntity.ok(ofertaService.adicionarQuantidade(ofertaId, quantidadeAdicionada));
