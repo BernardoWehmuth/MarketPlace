@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import edu.marketplace.repositorys.*;
 import jakarta.transaction.Transactional;
-import edu.marketplace.dto.PedidoOfertaDto;
+import edu.marketplace.dto.PedidoOfertaDTO;
 import edu.marketplace.models.*;
 
 @Service
@@ -30,7 +30,7 @@ public class PedidoService {
     }
     
     @Transactional
-    public PedidoModel realizarPedido(List<PedidoOfertaDto> ofertasPedido, int compradorId) {
+    public PedidoModel realizarPedido(List<PedidoOfertaDTO> ofertasPedido, int compradorId) {
     	UsuarioModel comprador = usuarioRepository.findById(compradorId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     	
@@ -42,7 +42,7 @@ public class PedidoService {
     	double valorTotal = 0;
     	LojaModel loja = null;
        
-    	for (PedidoOfertaDto item : ofertasPedido) {
+    	for (PedidoOfertaDTO item : ofertasPedido) {
 
             OfertaModel oferta = ofertaRepository.findById(item.getOfertaId())
                     .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada"));

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import edu.marketplace.dto.PedidoRequestDto;
+import edu.marketplace.dto.PedidoRequestDTO;
 import edu.marketplace.models.PedidoModel;
 import edu.marketplace.service.PedidoService;
 
@@ -16,7 +16,7 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping("/criar")
-    public ResponseEntity<PedidoModel> realizarPedido(@RequestBody PedidoRequestDto request) {
+    public ResponseEntity<PedidoModel> realizarPedido(@RequestBody PedidoRequestDTO request) {
         PedidoModel pedido = pedidoService.realizarPedido(request.getOfertas(), request.getCompradorId());
         return ResponseEntity.ok(pedido);
     }

@@ -17,11 +17,6 @@ public class LojaController {
 	@Autowired
 	private LojaService lojaService;
 	
-	@GetMapping("/listar")
-	public ResponseEntity<List<LojaModel>> listarLojas(){
-		return ResponseEntity.ok(lojaService.listarLojas());
-	}
-	
 	@PostMapping("/criar/{usuarioId}")
 	public ResponseEntity<?> criarLoja(@PathVariable int usuarioId, @RequestBody LojaModel novaLoja) {
 	    try {
@@ -33,4 +28,11 @@ public class LojaController {
 	        return ResponseEntity.badRequest().body(e.getMessage());
 	    }
 	}
+	
+	@GetMapping("/listar")
+	public ResponseEntity<List<LojaModel>> listarLojas(){
+		return ResponseEntity.ok(lojaService.listarLojas());
+	}
+	
+	
 }

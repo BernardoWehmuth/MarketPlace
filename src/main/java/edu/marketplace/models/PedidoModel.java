@@ -17,7 +17,7 @@ public class PedidoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data_pedido")
     private LocalDateTime dataPedido;
 
     @Column(nullable = false)

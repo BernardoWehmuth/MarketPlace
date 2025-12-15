@@ -28,5 +28,4 @@ public class ItemController {
 	public ResponseEntity<?> listarItens(){
 		return ResponseEntity.ok(itemService.listarItens());
 	}
-	
 }
