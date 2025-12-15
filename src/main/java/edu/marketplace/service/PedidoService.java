@@ -3,15 +3,20 @@ package edu.marketplace.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import edu.marketplace.repositorys.*;
-import jakarta.transaction.Transactional;
+import edu.marketplace.dto.LojaResponseDTO;
+import edu.marketplace.dto.OfertaResponseDTO;
 import edu.marketplace.dto.PedidoOfertaDTO;
+import edu.marketplace.dto.PedidoRequestDTO;
+import edu.marketplace.dto.PedidoResponseDTO;
+import edu.marketplace.dto.UsuarioResponseDTO;
 import edu.marketplace.models.*;
+import edu.marketplace.repositorys.*;
 
 @Service
 public class PedidoService {
@@ -25,60 +30,100 @@ public class PedidoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public ResponseEntity<?> listarPedidos(){
-    	return ResponseEntity.ok(pedidoRepository.findAll());
+    public List<PedidoResponseDTO> listarPedidos(){
+        List<PedidoModel> pedidos = pedidoRepository.findAll();
+        
+        return pedidos.stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
     
     @Transactional
-    public PedidoModel realizarPedido(List<PedidoOfertaDTO> ofertasPedido, int compradorId) {
-    	UsuarioModel comprador = usuarioRepository.findById(compradorId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-    	
-    	PedidoModel pedido = new PedidoModel();
-    	pedido.setComprador(comprador);
-    	pedido.setDataPedido(LocalDateTime.now());
+    public PedidoResponseDTO realizarPedido(PedidoRequestDTO request) {
         
-    	List<OfertaModel> ofertasUsadas = new ArrayList<>();
-    	double valorTotal = 0;
-    	LojaModel loja = null;
-       
-    	for (PedidoOfertaDTO item : ofertasPedido) {
+        UsuarioModel comprador = usuarioRepository.findById(request.getCompradorId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        PedidoModel pedido = new PedidoModel();
+        pedido.setComprador(comprador);
+        pedido.setDataPedido(LocalDateTime.now());
+        
+        List<OfertaModel> ofertasUsadas = new ArrayList<>();
+        double valorTotal = 0;
+        LojaModel loja = null;
+        
+        for (PedidoOfertaDTO itemDto : request.getOfertas()) {
 
-            OfertaModel oferta = ofertaRepository.findById(item.getOfertaId())
-                    .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada"));
+            OfertaModel oferta = ofertaRepository.findById(itemDto.getOfertaId())
+                    .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada ID: " + itemDto.getOfertaId()));
 
-            if (loja == null)
+            if (loja == null) {
                 loja = oferta.getLoja();
+            }
 
-            if (oferta.getLoja().getId() != loja.getId())
-                throw new IllegalArgumentException("Todas as ofertas devem ser da mesma loja");
+            if (oferta.getLoja().getId() != loja.getId()) {
+                throw new IllegalArgumentException("Não é possível comprar itens de lojas diferentes no mesmo pedido");
+            }
 
-            if (oferta.getQuantidade() < item.getQuantidade())
-                throw new IllegalArgumentException("Estoque insuficiente da oferta " + oferta.getId());
+            if (oferta.getQuantidade() < itemDto.getQuantidade()) {
+                throw new IllegalArgumentException("Estoque insuficiente para o item: " + oferta.getItem().getNome());
+            }
 
-            oferta.setQuantidade(oferta.getQuantidade() - item.getQuantidade());
+            oferta.setQuantidade(oferta.getQuantidade() - itemDto.getQuantidade());
             ofertaRepository.save(oferta);
 
             ofertasUsadas.add(oferta);
 
-            valorTotal += oferta.getPreco() * item.getQuantidade();
+            valorTotal += oferta.getPreco() * itemDto.getQuantidade();
         }
         
-    	pedido.setOfertas(ofertasUsadas);
+        pedido.setOfertas(ofertasUsadas);
         pedido.setLoja(loja);
         pedido.setValorPedido(valorTotal);
 
-        return pedidoRepository.save(pedido);
+        PedidoModel pedidoSalvo = pedidoRepository.save(pedido);
+        return converterParaDTO(pedidoSalvo);
     }
     
     @Transactional
     public void excluirPedido(int pedidoId) {
-        PedidoModel pedido = pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
-
-        pedido.getOfertas().clear();
-
-        pedidoRepository.delete(pedido);
+        if (!pedidoRepository.existsById(pedidoId)) {
+            throw new IllegalArgumentException("Pedido não encontrado");
+        }
+        pedidoRepository.deleteById(pedidoId);
     }
 
+    private PedidoResponseDTO converterParaDTO(PedidoModel model) {
+        PedidoResponseDTO dto = new PedidoResponseDTO();
+        dto.setId(model.getId());
+        dto.setDataPedido(model.getDataPedido());
+        dto.setValorTotal(model.getValorPedido());
+
+        UsuarioResponseDTO compradorDto = new UsuarioResponseDTO();
+        compradorDto.setId(model.getComprador().getId());
+        compradorDto.setNome(model.getComprador().getNome());
+        compradorDto.setEmail(model.getComprador().getEmail());
+        dto.setComprador(compradorDto);
+
+        LojaResponseDTO lojaDto = new LojaResponseDTO();
+        lojaDto.setId(model.getLoja().getId());
+        lojaDto.setNome(model.getLoja().getNome());
+        lojaDto.setCnpj(model.getLoja().getCnpj());
+        lojaDto.setNomeProprietario(model.getLoja().getProprietario().getNome());
+        dto.setLoja(lojaDto);
+
+        List<OfertaResponseDTO> listaItens = model.getOfertas().stream()
+            .map(oferta -> {
+                OfertaResponseDTO itemDto = new OfertaResponseDTO();
+                itemDto.setId(oferta.getId());
+                itemDto.setNomeItem(oferta.getItem().getNome());
+                itemDto.setDescricaoItem(oferta.getItem().getDescricao());
+                itemDto.setPreco(oferta.getPreco());
+                return itemDto;
+            }).collect(Collectors.toList());
+
+        dto.setItens(listaItens);
+
+        return dto;
+    }
 }

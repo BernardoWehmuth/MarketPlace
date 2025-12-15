@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import edu.marketplace.dto.PedidoRequestDTO;
-import edu.marketplace.models.PedidoModel;
+import edu.marketplace.dto.PedidoResponseDTO;
 import edu.marketplace.service.PedidoService;
 
 @RestController
@@ -16,8 +16,8 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping("/criar")
-    public ResponseEntity<PedidoModel> realizarPedido(@RequestBody PedidoRequestDTO request) {
-        PedidoModel pedido = pedidoService.realizarPedido(request.getOfertas(), request.getCompradorId());
+    public ResponseEntity<PedidoResponseDTO> realizarPedido(@RequestBody PedidoRequestDTO request) {
+        PedidoResponseDTO pedido = pedidoService.realizarPedido(request);
         return ResponseEntity.ok(pedido);
     }
 
