@@ -77,6 +77,7 @@ public class OfertaService {
     private OfertaResponseDTO converterParaDTO(OfertaModel model) {
     	OfertaResponseDTO dto = new OfertaResponseDTO();
         dto.setId(model.getId());
+        dto.setNomeItem(model.getItem().getNome());
         dto.setDescricaoItem(model.getItem().getDescricao());
         dto.setPreco(model.getPreco());
         dto.setQuantidade(model.getQuantidade());
