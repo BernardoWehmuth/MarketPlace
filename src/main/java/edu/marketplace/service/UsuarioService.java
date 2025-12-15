@@ -1,6 +1,7 @@
 package edu.marketplace.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,11 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	public List<UsuarioModel> listarUsuarios(){
-		return usuarioRepository.findAll();
+	public List<UsuarioResponseDTO> listarUsuarios(){
+		List<UsuarioModel> usuarios = usuarioRepository.findAll();
+		return usuarios.stream()
+				.map(this::converterParaResponseDTO)
+				.collect(Collectors.toList());
 	}
 	
 	public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO dto) {
