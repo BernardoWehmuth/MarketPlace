@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.marketplace.dto.LojaResponseDTO;
 import edu.marketplace.dto.OfertaResponseDTO;
 import edu.marketplace.models.ItemModel;
 import edu.marketplace.models.LojaModel;
@@ -27,7 +26,7 @@ public class OfertaService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public OfertaModel criarOferta(int lojaId, int itemId, double preco, int quantidade) {
+    public OfertaResponseDTO criarOferta(int lojaId, int itemId, double preco, int quantidade) {
         LojaModel loja = lojaRepository.findById(lojaId)
                 .orElseThrow(() -> new IllegalArgumentException("Loja não encontrada"));
         ItemModel item = itemRepository.findById(itemId)
@@ -39,46 +38,57 @@ public class OfertaService {
         oferta.setPreco(preco);
         oferta.setQuantidade(quantidade);
 
-        return ofertaRepository.save(oferta);
+        OfertaModel ofertaSalva = ofertaRepository.save(oferta);
+        
+        return converterParaDTO(ofertaSalva);
     }
 
-    public List<OfertaModel> listarOfertasDaLoja(int lojaId) {
+    public List<OfertaResponseDTO> listarOfertasDaLoja(int lojaId) {
         LojaModel loja = lojaRepository.findById(lojaId)
                 .orElseThrow(() -> new IllegalArgumentException("Loja não encontrada"));
-        return loja.getOfertas();
+        
+        return loja.getOfertas().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
 
     public List<OfertaResponseDTO> listarTodasOfertas() {
         return ofertaRepository.findAll().stream()
-        		.map(this::converterParaDTO).
-        		collect(Collectors.toList());
+        		.map(this::converterParaDTO)
+        		.collect(Collectors.toList());
     }
 
-    public OfertaModel atualizarOferta(int ofertaId, double novoPreco, int novaQuantidade) {
+    public OfertaResponseDTO atualizarOferta(int ofertaId, double novoPreco, int novaQuantidade) {
         OfertaModel oferta = ofertaRepository.findById(ofertaId)
                 .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada"));
 
         oferta.setPreco(novoPreco);
         oferta.setQuantidade(novaQuantidade);
 
-        return ofertaRepository.save(oferta);
+        OfertaModel ofertaSalva = ofertaRepository.save(oferta);
+        
+        return converterParaDTO(ofertaSalva);
     }
 
-    public OfertaModel adicionarQuantidade(int ofertaId, int quantidadeAdicionada) {
+    public OfertaResponseDTO adicionarQuantidade(int ofertaId, int quantidadeAdicionada) {
         OfertaModel oferta = ofertaRepository.findById(ofertaId)
                 .orElseThrow(() -> new IllegalArgumentException("Oferta não encontrada"));
 
         int novaQuantidade = oferta.getQuantidade() + quantidadeAdicionada;
         oferta.setQuantidade(novaQuantidade);
 
-        return ofertaRepository.save(oferta);
+        OfertaModel ofertaSalva = ofertaRepository.save(oferta);
+        
+        return converterParaDTO(ofertaSalva);
     }
     
     private OfertaResponseDTO converterParaDTO(OfertaModel model) {
     	OfertaResponseDTO dto = new OfertaResponseDTO();
         dto.setId(model.getId());
+        
         dto.setNomeItem(model.getItem().getNome());
         dto.setDescricaoItem(model.getItem().getDescricao());
+        
         dto.setPreco(model.getPreco());
         dto.setQuantidade(model.getQuantidade());
         
