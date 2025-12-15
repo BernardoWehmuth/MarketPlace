@@ -8,7 +8,6 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "ofertas")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OfertaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

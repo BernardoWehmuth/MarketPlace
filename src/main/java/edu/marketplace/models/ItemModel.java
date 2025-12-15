@@ -10,7 +10,6 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "itens")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ItemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
