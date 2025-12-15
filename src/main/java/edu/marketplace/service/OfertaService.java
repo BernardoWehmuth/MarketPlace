@@ -1,10 +1,13 @@
 package edu.marketplace.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.marketplace.dto.LojaResponseDTO;
+import edu.marketplace.dto.OfertaResponseDTO;
 import edu.marketplace.models.ItemModel;
 import edu.marketplace.models.LojaModel;
 import edu.marketplace.models.OfertaModel;
@@ -45,8 +48,10 @@ public class OfertaService {
         return loja.getOfertas();
     }
 
-    public List<OfertaModel> listarTodasOfertas() {
-        return ofertaRepository.findAll();
+    public List<OfertaResponseDTO> listarTodasOfertas() {
+        return ofertaRepository.findAll().stream()
+        		.map(this::converterParaDTO).
+        		collect(Collectors.toList());
     }
 
     public OfertaModel atualizarOferta(int ofertaId, double novoPreco, int novaQuantidade) {
@@ -67,5 +72,15 @@ public class OfertaService {
         oferta.setQuantidade(novaQuantidade);
 
         return ofertaRepository.save(oferta);
+    }
+    
+    private OfertaResponseDTO converterParaDTO(OfertaModel model) {
+    	OfertaResponseDTO dto = new OfertaResponseDTO();
+        dto.setId(model.getId());
+        dto.setDescricaoItem(model.getItem().getDescricao());
+        dto.setPreco(model.getPreco());
+        dto.setQuantidade(model.getQuantidade());
+        
+        return dto;
     }
 }

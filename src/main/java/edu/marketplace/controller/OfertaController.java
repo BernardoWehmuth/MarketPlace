@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import edu.marketplace.dto.OfertaResponseDTO;
 import edu.marketplace.models.OfertaModel;
 import edu.marketplace.service.OfertaService;
 
@@ -32,7 +33,7 @@ public class OfertaController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<OfertaModel>> listarTodas() {
+    public ResponseEntity<List<OfertaResponseDTO>> listarTodas() {
         return ResponseEntity.ok(ofertaService.listarTodasOfertas());
     }
     
