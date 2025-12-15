@@ -25,15 +25,23 @@ public class UsuarioService {
 	
 	public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO dto) {
 		
+		if (usuarioRepository.existsByUsuario(dto.getUsuario())) {
+	        throw new IllegalArgumentException("Erro: O nome de usuário '" + dto.getUsuario() + "' já está em uso.");
+	    }
+	    
+	    if (usuarioRepository.existsByEmail(dto.getEmail())) {
+	        throw new IllegalArgumentException("Erro: O email '" + dto.getEmail() + "' já está cadastrado.");
+	    }
+		
 		UsuarioModel usuarioParaSalvar = new UsuarioModel();
 		usuarioParaSalvar.setUsuario(dto.getUsuario());
 		usuarioParaSalvar.setNome(dto.getNome());
 		usuarioParaSalvar.setSenha(dto.getSenha());
 		usuarioParaSalvar.setEmail(dto.getEmail());
 		
-		usuarioRepository.save(usuarioParaSalvar);
+		UsuarioModel usuarioSalvo = usuarioRepository.save(usuarioParaSalvar);
 		
-		return converterParaResponseDTO(usuarioParaSalvar);
+		return converterParaResponseDTO(usuarioSalvo);
 	}
 	
 	private UsuarioResponseDTO converterParaResponseDTO(UsuarioModel model) {
