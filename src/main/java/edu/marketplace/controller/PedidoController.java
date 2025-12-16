@@ -15,17 +15,17 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @PostMapping("/criar")
+    @PostMapping
     public ResponseEntity<PedidoResponseDTO> realizarPedido(@RequestBody PedidoRequestDTO request) {
         PedidoResponseDTO pedido = pedidoService.realizarPedido(request);
         return ResponseEntity.ok(pedido);
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> listarPedidos() {
         return ResponseEntity.ok(pedidoService.listarPedidos());
     }
-    @DeleteMapping("/excluir/{pedidoId}")
+    @DeleteMapping("{pedidoId}")
     public ResponseEntity<?> excluirPedido(@PathVariable int pedidoId){
     	try {
     		pedidoService.excluirPedido(pedidoId);

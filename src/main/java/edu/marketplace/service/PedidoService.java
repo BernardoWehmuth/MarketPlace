@@ -119,6 +119,7 @@ public class PedidoService {
                 itemDto.setNomeItem(oferta.getItem().getNome());
                 itemDto.setDescricaoItem(oferta.getItem().getDescricao());
                 itemDto.setPreco(oferta.getPreco());
+ 
                 return itemDto;
             }).collect(Collectors.toList());
 

@@ -14,7 +14,7 @@ public class ItemController {
 	ItemService itemService;
 	
 	
-	@PostMapping("/criar")
+	@PostMapping
 	public ResponseEntity<?> criarItem(@RequestBody ItemModel novoItem){
 		try{
 			ItemModel item = itemService.criarItem(novoItem);
@@ -24,7 +24,7 @@ public class ItemController {
 		}
 	}
 	
-	@GetMapping("/listar")
+	@GetMapping
 	public ResponseEntity<?> listarItens(){
 		return ResponseEntity.ok(itemService.listarItens());
 	}
