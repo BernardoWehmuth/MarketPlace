@@ -3,10 +3,10 @@ package edu.marketplace.dto;
 import lombok.Data;
 
 @Data
-public class OfertaResponseDTO {
+public class PedidoOfertaResponseDTO {
     private int id;
     private String nomeItem;
-    private String descricaoItem;
     private double precoUnitario;
     private int quantidade;
+    private double precoTotal;
 }

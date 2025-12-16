@@ -89,7 +89,7 @@ public class OfertaService {
         dto.setNomeItem(model.getItem().getNome());
         dto.setDescricaoItem(model.getItem().getDescricao());
         
-        dto.setPreco(model.getPreco());
+        dto.setPrecoUnitario(model.getPreco());
         dto.setQuantidade(model.getQuantidade());
         
         return dto;

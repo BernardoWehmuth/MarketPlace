@@ -32,12 +32,6 @@ public class PedidoModel {
     @JsonIgnoreProperties({"pedidos", "ofertas", "proprietario"})
     private LojaModel loja;
 
-    @ManyToMany
-    @JoinTable(
-        name = "pedidos_ofertas",
-        joinColumns = @JoinColumn(name = "pedido_id"),
-        inverseJoinColumns = @JoinColumn(name = "oferta_id")
-    )
-    @JsonIgnoreProperties({"loja"})
-    private List<OfertaModel> ofertas;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoOfertaModel> itens;
 }

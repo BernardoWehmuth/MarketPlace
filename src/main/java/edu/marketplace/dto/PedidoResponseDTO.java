@@ -13,5 +13,5 @@ public class PedidoResponseDTO {
 	
 	private UsuarioResponseDTO comprador;
 	private LojaResponseDTO loja;
-	private List<OfertaResponseDTO> itens;
+	private List<PedidoOfertaResponseDTO> itens;
 }
