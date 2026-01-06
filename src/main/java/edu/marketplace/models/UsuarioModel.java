@@ -1,13 +1,16 @@
 package edu.marketplace.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "usuarios")
 public class UsuarioModel {
     @Id

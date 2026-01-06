@@ -1,11 +1,14 @@
 package edu.marketplace.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
-@Table(name = "pedido_oferta")
-@Data
+@Table(name = "pedidos_ofertas")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PedidoOfertaModel {
 
     @Id

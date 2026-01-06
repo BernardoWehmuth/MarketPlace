@@ -19,7 +19,7 @@ public class UsuarioService {
 	public List<UsuarioResponseDTO> listarUsuarios(){
 		List<UsuarioModel> usuarios = usuarioRepository.findAll();
 		return usuarios.stream()
-				.map(this::converterParaResponseDTO)
+				.map(this::converterParaDTO)
 				.collect(Collectors.toList());
 	}
 	
@@ -41,10 +41,10 @@ public class UsuarioService {
 		
 		UsuarioModel usuarioSalvo = usuarioRepository.save(usuarioParaSalvar);
 		
-		return converterParaResponseDTO(usuarioSalvo);
+		return converterParaDTO(usuarioSalvo);
 	}
 	
-	private UsuarioResponseDTO converterParaResponseDTO(UsuarioModel model) {
+	private UsuarioResponseDTO converterParaDTO(UsuarioModel model) {
 		UsuarioResponseDTO dto = new UsuarioResponseDTO();
 		dto.setId(model.getId());
 		dto.setNome(model.getNome());
