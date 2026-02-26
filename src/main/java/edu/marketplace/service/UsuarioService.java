@@ -23,6 +23,17 @@ public class UsuarioService {
 				.collect(Collectors.toList());
 	}
 	
+	public UsuarioResponseDTO buscarUsuarioPeloId(int id){
+		UsuarioModel usuarioBusca = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+		UsuarioResponseDTO usuarioDTO = new UsuarioResponseDTO();
+		usuarioDTO.setId(id);
+		usuarioDTO.setNome(usuarioBusca.getNome());
+		usuarioDTO.setEmail(usuarioBusca.getEmail());
+
+		return usuarioDTO;
+	}
+
 	public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO dto) {
 		
 		if (usuarioRepository.existsByUsuario(dto.getUsuario())) {

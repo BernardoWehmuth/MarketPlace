@@ -19,6 +19,11 @@ public class UsuarioController {
 	public ResponseEntity<?> listarUsuarios(){
 		return ResponseEntity.ok(usuarioService.listarUsuarios());
 	}
+
+	@GetMapping("{usuarioId}")
+	public ResponseEntity<?> buscarUsuarioPeloId(@PathVariable int usuarioId){
+		return ResponseEntity.ok(usuarioService.buscarUsuarioPeloId(usuarioId));
+	}
 	
 	@PostMapping
 	public ResponseEntity<?> criarUsuario(@RequestBody @Valid UsuarioRequestDTO novoUsuario) {

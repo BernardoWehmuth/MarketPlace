@@ -9,7 +9,6 @@ import edu.marketplace.dto.LojaRequestDTO;
 import edu.marketplace.dto.LojaResponseDTO;
 import edu.marketplace.service.LojaService;
 
-
 @RestController
 @RequestMapping("marketplace/lojas")
 public class LojaController {
