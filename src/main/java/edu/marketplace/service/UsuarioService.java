@@ -35,7 +35,6 @@ public class UsuarioService {
 	}
 
 	public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO dto) {
-		
 		if (usuarioRepository.existsByUsuario(dto.getUsuario())) {
 	        throw new IllegalArgumentException("Erro: O nome de usuário '" + dto.getUsuario() + "' já está em uso.");
 	    }
