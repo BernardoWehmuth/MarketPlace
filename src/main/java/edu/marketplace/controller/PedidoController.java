@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import edu.marketplace.dto.PedidoRequestDTO;
 import edu.marketplace.dto.PedidoResponseDTO;
 import edu.marketplace.service.PedidoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/marketplace/pedidos")
@@ -16,7 +17,7 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<PedidoResponseDTO> realizarPedido(@RequestBody PedidoRequestDTO request) {
+    public ResponseEntity<PedidoResponseDTO> realizarPedido(@RequestBody @Valid PedidoRequestDTO request) {
         PedidoResponseDTO pedido = pedidoService.realizarPedido(request);
         return ResponseEntity.ok(pedido);
     }

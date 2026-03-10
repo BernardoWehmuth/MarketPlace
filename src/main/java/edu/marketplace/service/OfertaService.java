@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.marketplace.dto.OfertaRequestDTO;
 import edu.marketplace.dto.OfertaResponseDTO;
 import edu.marketplace.models.ItemModel;
 import edu.marketplace.models.LojaModel;
@@ -26,17 +27,17 @@ public class OfertaService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public OfertaResponseDTO criarOferta(int lojaId, int itemId, double preco, int quantidade) {
-        LojaModel loja = lojaRepository.findById(lojaId)
+    public OfertaResponseDTO criarOferta(OfertaRequestDTO dtoRequest) {
+        LojaModel loja = lojaRepository.findById(dtoRequest.getLojaId())
                 .orElseThrow(() -> new IllegalArgumentException("Loja não encontrada"));
-        ItemModel item = itemRepository.findById(itemId)
+        ItemModel item = itemRepository.findById(dtoRequest.getItemId())
                 .orElseThrow(() -> new IllegalArgumentException("Item não encontrado"));
 
         OfertaModel oferta = new OfertaModel();
         oferta.setLoja(loja);
         oferta.setItem(item);
-        oferta.setPreco(preco);
-        oferta.setQuantidade(quantidade);
+        oferta.setPreco(dtoRequest.getPreco());
+        oferta.setQuantidade(dtoRequest.getQuantidade());
 
         OfertaModel ofertaSalva = ofertaRepository.save(oferta);
         

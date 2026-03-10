@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import edu.marketplace.dto.OfertaRequestDTO;
 import edu.marketplace.dto.OfertaResponseDTO;
 import edu.marketplace.service.OfertaService;
 
@@ -17,14 +18,9 @@ public class OfertaController {
     private OfertaService ofertaService;
 
     @PostMapping
-    public ResponseEntity<?> criarOferta(
-            @RequestParam int lojaId,
-            @RequestParam int itemId,
-            @RequestParam double preco,
-            @RequestParam int quantidade) {
-
+    public ResponseEntity<?> criarOferta(@RequestBody OfertaRequestDTO ofertaRequestDto) {
         try {
-            OfertaResponseDTO nova = ofertaService.criarOferta(lojaId, itemId, preco, quantidade);
+            OfertaResponseDTO nova = ofertaService.criarOferta(ofertaRequestDto);
             return ResponseEntity.ok(nova);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

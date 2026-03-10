@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import edu.marketplace.dto.LojaRequestDTO;
 import edu.marketplace.dto.LojaResponseDTO;
 import edu.marketplace.service.LojaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("marketplace/lojas")
@@ -16,7 +17,7 @@ public class LojaController {
 	private LojaService lojaService;
 	
 	@PostMapping("/{usuarioId}")
-	public ResponseEntity<?> criarLoja(@PathVariable int usuarioId, @RequestBody LojaRequestDTO novaLoja) {
+	public ResponseEntity<?> criarLoja(@PathVariable int usuarioId, @RequestBody @Valid LojaRequestDTO novaLoja) {
 	    try {
 	        LojaResponseDTO loja = lojaService.criarLoja(usuarioId, novaLoja);
 	        return ResponseEntity.ok(loja);
