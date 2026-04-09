@@ -13,4 +13,5 @@ public class OfertaResponseDTO {
     private String descricaoItem;
     private double precoUnitario;
     private int quantidade;
+    private String nomeLoja;
 }

@@ -1,4 +1,4 @@
-package edu.marketplace.config;
+package edu.marketplace.Handlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

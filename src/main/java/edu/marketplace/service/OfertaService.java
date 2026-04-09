@@ -44,15 +44,6 @@ public class OfertaService {
         return converterParaDTO(ofertaSalva);
     }
 
-    public List<OfertaResponseDTO> listarOfertasDaLoja(int lojaId) {
-        LojaModel loja = lojaRepository.findById(lojaId)
-                .orElseThrow(() -> new IllegalArgumentException("Loja não encontrada"));
-        
-        return loja.getOfertas().stream()
-                .map(this::converterParaDTO)
-                .collect(Collectors.toList());
-    }
-
     public List<OfertaResponseDTO> listarTodasOfertas() {
         return ofertaRepository.findAll().stream()
         		.map(this::converterParaDTO)
@@ -93,6 +84,8 @@ public class OfertaService {
         dto.setPrecoUnitario(model.getPreco());
         dto.setQuantidade(model.getQuantidade());
         
+        dto.setNomeLoja(model.getLoja().getNome());
+
         return dto;
     }
 }
